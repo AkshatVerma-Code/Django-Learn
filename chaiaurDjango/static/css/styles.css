@@ -1,0 +1,131 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    background: linear-gradient(135deg, #1a4d2e 0%, #2d6a4f 100%);
+    color: #f1faee;
+    min-height: 100vh;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    padding: 40px 20px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 15px;
+    margin-bottom: 30px;
+    backdrop-filter: blur(10px);
+}
+
+h1 {
+    font-size: 3em;
+    margin-bottom: 10px;
+    color: #b7e4c7;
+}
+
+.tagline {
+    font-size: 1.2em;
+    color: #d8f3dc;
+}
+
+.search-section {
+    margin: 30px 0;
+    text-align: center;
+}
+
+.search-box {
+    width: 100%;
+    max-width: 600px;
+    padding: 15px 20px;
+    font-size: 1.1em;
+    border: 2px solid #52b788;
+    border-radius: 50px;
+    background: rgba(255, 255, 255, 0.95);
+    color: #1b4332;
+    outline: none;
+    transition: all 0.3s ease;
+}
+
+.search-box:focus {
+    border-color: #95d5b2;
+    box-shadow: 0 0 20px rgba(149, 213, 178, 0.5);
+}
+
+.chai-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 25px;
+    margin-top: 40px;
+}
+
+.chai-card {
+    background: rgba(255, 255, 255, 0.15);
+    border-radius: 15px;
+    padding: 25px;
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(183, 228, 199, 0.3);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.chai-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(82, 183, 136, 0.3);
+}
+
+.chai-card h3 {
+    color: #b7e4c7;
+    font-size: 1.5em;
+    margin-bottom: 10px;
+}
+
+.chai-card p {
+    color: #d8f3dc;
+    margin-bottom: 15px;
+    line-height: 1.6;
+}
+
+.price {
+    font-size: 1.3em;
+    color: #95d5b2;
+    font-weight: bold;
+    margin-bottom: 15px;
+}
+
+.order-btn {
+    width: 100%;
+    padding: 12px 25px;
+    background: linear-gradient(135deg, #40916c 0%, #52b788 100%);
+    color: white;
+    border: none;
+    border-radius: 25px;
+    font-size: 1em;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.order-btn:hover {
+    background: linear-gradient(135deg, #52b788 0%, #74c69d 100%);
+    transform: scale(1.05);
+}
+
+.hidden {
+    display: none;
+}
+
+.no-results {
+    text-align: center;
+    padding: 40px;
+    font-size: 1.2em;
+    color: #b7e4c7;
+}

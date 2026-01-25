@@ -1,0 +1,71 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chai Aur Code - Order Your Favorite Chai</title>
+    <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🍵 Chai Aur Code</h1>
+            <p class="tagline">Brew Your Perfect Cup of Chai</p>
+        </header>
+
+        <div class="search-section">
+            <input type="text" class="search-box" id="searchInput" placeholder="Search for your favorite chai...">
+        </div>
+
+        <div class="chai-grid" id="chaiGrid">
+            <div class="chai-card" data-name="Masala Chai">
+                <h3>Masala Chai</h3>
+                <p>Traditional Indian spiced tea with aromatic blend of cardamom, ginger, and cinnamon.</p>
+                <div class="price">₹40</div>
+                <button class="order-btn" onclick="orderChai('Masala Chai')">Order Now</button>
+            </div>
+
+            <div class="chai-card" data-name="Ginger Chai">
+                <h3>Ginger Chai</h3>
+                <p>Refreshing tea infused with fresh ginger, perfect for cold days.</p>
+                <div class="price">₹35</div>
+                <button class="order-btn" onclick="orderChai('Ginger Chai')">Order Now</button>
+            </div>
+
+            <div class="chai-card" data-name="Cardamom Chai">
+                <h3>Cardamom Chai</h3>
+                <p>Delicate and fragrant chai with the essence of green cardamom.</p>
+                <div class="price">₹45</div>
+                <button class="order-btn" onclick="orderChai('Cardamom Chai')">Order Now</button>
+            </div>
+
+            <div class="chai-card" data-name="Tulsi Chai">
+                <h3>Tulsi Chai</h3>
+                <p>Holy basil tea known for its healing properties and soothing flavor.</p>
+                <div class="price">₹50</div>
+                <button class="order-btn" onclick="orderChai('Tulsi Chai')">Order Now</button>
+            </div>
+
+            <div class="chai-card" data-name="Lemon Chai">
+                <h3>Lemon Chai</h3>
+                <p>Zesty and refreshing tea with a tangy lemon twist.</p>
+                <div class="price">₹38</div>
+                <button class="order-btn" onclick="orderChai('Lemon Chai')">Order Now</button>
+            </div>
+
+            <div class="chai-card" data-name="Cutting Chai">
+                <h3>Cutting Chai</h3>
+                <p>Mumbai's famous half cup of strong, sweet tea perfect for a quick break.</p>
+                <div class="price">₹20</div>
+                <button class="order-btn" onclick="orderChai('Cutting Chai')">Order Now</button>
+            </div>
+        </div>
+
+        <div class="no-results hidden" id="noResults">
+            No chai found. Try searching for something else!
+        </div>
+    </div>
+    <script src="{% static 'js/script.js' %}"></script>
+</body>
+</html>
