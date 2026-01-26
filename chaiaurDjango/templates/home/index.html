@@ -1,3 +1,4 @@
+{% load static tailwind_tags %}
 {% load static %}
 <!DOCTYPE html>
 <html lang="en">
@@ -6,11 +7,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Chai Aur Code - Order Your Favorite Chai</title>
     <link rel="stylesheet" href="{% static '/css/styles.css' %}">
+    {% tailwind_css %}
 </head>
 <body>
     <div class="container">
         <header>
-            <h1>🍵 Chai Aur Code</h1>
+            <h1 class="text-5xl">🍵 Chai Aur Code</h1>
             <p class="tagline">Brew Your Perfect Cup of Chai</p>
         </header>
 
@@ -20,7 +22,7 @@
 
         <div class="chai-grid" id="chaiGrid">
             <div class="chai-card" data-name="Masala Chai">
-                <h3>Masala Chai</h3>
+                <h3">Masala Chai</h3>
                 <p>Traditional Indian spiced tea with aromatic blend of cardamom, ginger, and cinnamon.</p>
                 <div class="price">₹40</div>
                 <button class="order-btn" onclick="orderChai('Masala Chai')">Order Now</button>
