@@ -325,6 +325,153 @@ urlpatterns = [
     path('app/', include('app_name.urls')),
 ]
 ```
+---
+
+## 🎨 Tailwind CSS Integration
+
+### Installation
+
+**Step 1:** Install required packages
+
+```bash
+pip install django-tailwind
+pip install 'django-tailwind[reload]'
+```
+
+**For UV users:** If using UV package manager, you'll need pip for this installation:
+
+```bash
+# Option 1
+python -m ensurepip --upgrade
+
+# Option 2
+python -m pip install --upgrade pip
+```
+
+### Configuration
+
+**Step 2:** Add Tailwind to installed apps
+
+**File:** `settings.py`
+
+```python
+INSTALLED_APPS = [
+    # ... other apps
+    'tailwind',
+]
+```
+
+**Step 3:** Initialize Tailwind
+
+```bash
+python manage.py tailwind init
+```
+
+> 📝 **Note:** This command will prompt you for an app name (default: `theme`) and other configuration options.
+
+**Step 4:** Register the Tailwind app
+
+Add the app name (from Step 3) to `INSTALLED_APPS`:
+
+**File:** `settings.py`
+
+```python
+INSTALLED_APPS = [
+    # ... other apps
+    'tailwind',
+    'theme',  # Your Tailwind app name
+]
+```
+
+**Step 5:** Configure Tailwind settings
+
+**File:** `settings.py`
+
+```python
+TAILWIND_APP_NAME = 'theme'  # App name used for Tailwind files
+INTERNAL_IPS = ['127.0.0.1']
+```
+
+**Step 6:** Set NPM binary path (Windows users)
+
+**File:** `settings.py`
+
+```python
+NPM_BIN_PATH = r'C:/Program Files/nodejs/npm.cmd'
+```
+
+**Step 7:** Install Tailwind dependencies
+
+```bash
+python manage.py tailwind install
+```
+
+### Running Tailwind
+
+To use Tailwind CSS, you need to run both the Tailwind compiler and Django server:
+
+**Terminal 1 - Tailwind Compiler:**
+```bash
+python manage.py tailwind start
+```
+
+**Terminal 2 - Django Server:**
+```bash
+python manage.py runserver
+```
+
+---
+
+## 🔄 Hot Reloading (Development Only)
+
+Hot reloading enables automatic CSS updates without manual page refresh.
+
+### Installation
+
+```bash
+pip install 'django-tailwind[reload]'
+```
+
+### Configuration
+
+**Step 1:** Add to installed apps
+
+**File:** `settings.py`
+
+```python
+INSTALLED_APPS = [
+    # ... other apps
+    'django_browser_reload',
+]
+```
+
+**Step 2:** Add middleware
+
+**File:** `settings.py`
+
+```python
+MIDDLEWARE = [
+    # ... other middleware
+    "django_browser_reload.middleware.BrowserReloadMiddleware",
+]
+```
+
+**Step 3:** Include reload URLs
+
+**File:** `urls.py`
+
+```python
+from django.urls import path, include
+
+urlpatterns = [
+    # ... other patterns
+    path("__reload__/", include("django_browser_reload.urls")),  # Must be last
+]
+```
+
+> ⚠️ **Important:** The reload path should be placed at the end of `urlpatterns`.
+
+> 🚀 **Production Note:** Hot reloading is for development only. Disable it in production environments. 
 
 ---
 
