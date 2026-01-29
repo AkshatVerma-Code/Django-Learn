@@ -522,6 +522,100 @@ Replace `username` with your actual username.
 
 ---
 
+## 🗄️ Django Models
+
+Models define the structure of your database tables. Each model is a Python class that represents a database table.
+
+### Creating Models
+
+Models are defined in the `models.py` file within your Django app.
+
+**File:** `app_name/models.py`
+
+```python
+from django.db import models
+from django.utils import timezone
+
+class ChaiVariety(models.Model):
+    CHAI_TYPE_CHOICE = [
+        ('ML', 'MASALA'),
+        ('GR', 'GINGER'),
+        ('KL', 'KIWI'),
+        ('PL', 'PLAIN'),
+        ('EL', 'ELACHI'),
+    ]
+    
+    Name = models.CharField(max_length=100)
+    image = models.ImageField(upload_to='chais/')
+    date_added = models.DateTimeField(default=timezone.now)
+    type = models.CharField(max_length=2, choices=CHAI_TYPE_CHOICE)
+    
+    def __str__(self):
+        return self.Name
+```
+
+> 💡 **Tip:** The `__str__()` method displays the object name in the admin panel instead of generic "Object (1), Object (2)".
+
+### Configuring Media Files
+
+For models using `ImageField` or `FileField`, configure media settings.
+
+**File:** `settings.py`
+
+```python
+import os
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+```
+
+**File:** `project_name/urls.py`
+
+```python
+from django.conf import settings
+from django.conf.urls.static import static
+
+urlpatterns = [
+    # ... your url patterns
+]
+
+# Serve media files during development
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+```
+
+### Creating Database Tables
+
+**Step 1:** Create migration files
+
+```bash
+python manage.py makemigrations app_name
+```
+
+**Step 2:** Apply migrations to database
+
+```bash
+python manage.py migrate
+```
+
+> 📊 **Note:** After migration, you can view the created tables and attributes in `db.sqlite3`.
+
+### Registering Models in Admin Panel
+
+To manage your models through the Django admin interface:
+
+**File:** `app_name/admin.py`
+
+```python
+from django.contrib import admin
+from .models import ChaiVariety
+
+admin.site.register(ChaiVariety)
+```
+
+Now you can add, edit, and delete model entries through the admin panel at `/admin/`.
+
+---
+
 ## 📝 Quick Reference
 
 - ✅ **UV**: Fast package manager
