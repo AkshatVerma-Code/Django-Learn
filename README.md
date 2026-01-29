@@ -471,7 +471,54 @@ urlpatterns = [
 
 > ⚠️ **Important:** The reload path should be placed at the end of `urlpatterns`.
 
-> 🚀 **Production Note:** Hot reloading is for development only. Disable it in production environments. 
+> 🚀 **Production Note:** Hot reloading is for development only. Disable it in production environments.
+
+---
+
+## 🔐 Django Admin Panel
+
+Django provides a powerful built-in admin interface for managing your application's data.
+
+### Initial Setup
+
+**Step 1:** Run migrations
+
+Before accessing the admin panel, apply database migrations:
+
+```bash
+python manage.py migrate
+```
+
+**Step 2:** Create a superuser
+
+```bash
+python manage.py createsuperuser
+```
+
+You'll be prompted to enter:
+- **Username**
+- **Email address** (optional)
+- **Password** (entered twice for confirmation)
+
+**Step 3:** Access the admin panel
+
+Start your development server and navigate to:
+
+```
+http://127.0.0.1:8000/admin/
+```
+
+Log in with your superuser credentials.
+
+### Password Management
+
+**Change forgotten password:**
+
+```bash
+python manage.py changepassword username
+```
+
+Replace `username` with your actual username.
 
 ---
 
