@@ -716,6 +716,173 @@ urlpatterns = [
 
 ---
 
+## 🔗 Django Model Relationships
+
+Django supports three types of database relationships to model real-world data connections.
+
+### 1. One-to-Many (Foreign Key)
+
+**Use Case:** Multiple records of one model relate to a single record of another model.
+
+**Example:** Multiple reviews for one chai variety
+
+**File:** `models.py`
+
+```python
+from django.db import models
+from django.utils import timezone
+from django.contrib.auth.models import User
+
+class ChaiReview(models.Model):
+    RATING_CHOICE = [
+        ('1 Star', 1),
+        ('2 Star', 2),
+        ('3 Star', 3),
+        ('4 Star', 4),
+        ('5 Star', 5),
+    ]
+
+    chai = models.ForeignKey(ChaiVariety, on_delete=models.CASCADE, related_name='reviews')
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    rating = models.CharField(choices=RATING_CHOICE, max_length=10)
+    comment = models.TextField()
+    date_added = models.DateTimeField(default=timezone.now)
+
+    def __str__(self):
+        return f"{self.user.username} reviewed {self.chai.Name}"
+```
+
+**Key Points:**
+
+- `ForeignKey` creates a many-to-one relationship
+- `on_delete=models.CASCADE` deletes reviews when the related chai is deleted
+- `related_name='reviews'` allows reverse access: `chai.reviews.all()`
+
+**Accessing Related Data:**
+
+```python
+# Get all reviews for a specific chai
+chai = ChaiVariety.objects.get(id=1)
+reviews = chai.reviews.all()
+
+# Get chai from a review
+review = ChaiReview.objects.get(id=1)
+chai = review.chai
+```
+
+### 2. Many-to-Many
+
+**Use Case:** Multiple records of one model relate to multiple records of another model.
+
+**Example:** Stores can sell multiple chai varieties, and each chai variety can be sold at multiple stores
+
+**File:** `models.py`
+
+```python
+class Store(models.Model):
+    name = models.CharField(max_length=100)
+    location = models.CharField(max_length=100)
+    chai_varieties = models.ManyToManyField(ChaiVariety, related_name='stores')
+
+    def __str__(self):
+        return self.name
+```
+
+**Key Points:**
+
+- `ManyToManyField` creates a bidirectional relationship
+- Django automatically creates a junction table
+- `related_name='stores'` allows reverse access: `chai.stores.all()`
+
+**Accessing Related Data:**
+
+```python
+# Get all chai varieties in a store
+store = Store.objects.get(id=1)
+chais = store.chai_varieties.all()
+
+# Get all stores selling a specific chai
+chai = ChaiVariety.objects.get(id=1)
+stores = chai.stores.all()
+
+# Add a chai variety to a store
+store.chai_varieties.add(chai)
+
+# Remove a chai variety from a store
+store.chai_varieties.remove(chai)
+```
+
+### 3. One-to-One
+
+**Use Case:** Each record in one model relates to exactly one record in another model.
+
+**Example:** Each chai variety has exactly one certificate
+
+**File:** `models.py`
+
+```python
+class ChaiCertificate(models.Model):
+    chai = models.OneToOneField(ChaiVariety, on_delete=models.CASCADE, related_name='certificate')
+    certificate_number = models.CharField(max_length=100)
+    issue_date = models.DateTimeField(default=timezone.now)
+    valid_until = models.DateTimeField()
+
+    def __str__(self):
+        return f'Certificate for {self.chai.Name}'
+```
+
+**Key Points:**
+
+- `OneToOneField` creates a unique one-to-one relationship
+- Similar to ForeignKey but enforces uniqueness
+- `related_name='certificate'` allows reverse access: `chai.certificate`
+
+**Accessing Related Data:**
+
+```python
+# Get certificate for a chai
+chai = ChaiVariety.objects.get(id=1)
+certificate = chai.certificate
+
+# Get chai from certificate
+certificate = ChaiCertificate.objects.get(id=1)
+chai = certificate.chai
+```
+
+### on_delete Options
+
+When using ForeignKey or OneToOneField, you must specify what happens when the referenced object is deleted:
+
+| Option        | Behavior                                              |
+| ------------- | ----------------------------------------------------- |
+| `CASCADE`     | Delete related objects automatically                  |
+| `PROTECT`     | Prevent deletion if related objects exist             |
+| `SET_NULL`    | Set foreign key to NULL (requires `null=True`)        |
+| `SET_DEFAULT` | Set foreign key to default value (requires `default`) |
+| `DO_NOTHING`  | Do nothing (may cause database errors)                |
+
+### Relationship Summary
+
+```python
+# One-to-Many: Use ForeignKey
+reviews = models.ForeignKey(ChaiVariety, on_delete=models.CASCADE)
+
+# Many-to-Many: Use ManyToManyField
+chai_varieties = models.ManyToManyField(ChaiVariety)
+
+# One-to-One: Use OneToOneField
+certificate = models.OneToOneField(ChaiVariety, on_delete=models.CASCADE)
+```
+
+> 💡 **Remember:** After creating or modifying models, always run:
+>
+> ```bash
+> python manage.py makemigrations
+> python manage.py migrate
+> ```
+
+---
+
 ## 📝 Quick Reference
 
 - ✅ **UV**: Fast package manager
