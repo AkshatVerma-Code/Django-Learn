@@ -1,30 +1,5 @@
-{% load static %}
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - Chai aur Code</title>
-    <link rel="stylesheet" href="{% static '/css/styles.css' %}">
-</head>
-<body>
-    <div class="container">
-        <h1>About <span class="highlight">Chai aur Code</span></h1>
-        
-        <p>Welcome to <strong>Chai aur Code</strong> - where learning meets passion!</p>
-        
-        <p>We believe in the power of combining comfort (chai) with coding. Our platform is dedicated to making programming accessible, enjoyable, and effective for everyone.</p>
-        
-        <div class="mission">
-            <h2>Our Mission</h2>
-            <p>To create a community where developers can learn, grow, and share their knowledge while enjoying the journey - one cup of chai at a time.</p>
-        </div>
-        
-        <p>Whether you're a beginner taking your first steps into the world of programming or an experienced developer looking to expand your skills, Chai aur Code is here to support your learning journey.</p>
-        
-        <p>Join us in building something amazing, one line of code at a time!</p>
-        
-        <a href="/" class="back-link">← Back to Home</a>
-    </div>
-</body>
-</html>
+{% extends "home/index.html" %}
+
+{% block content %}
+About chai
+{% endblock %}

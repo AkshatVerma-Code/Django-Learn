@@ -1,0 +1,10 @@
+{% extends "home/index.html" %}
+
+{% block content %}
+<h1>CHAI Detail for {{ chai.Name }} with id {{ chai.id }}</h1>
+<img src="{{chai.image.url}}" alt="" width="500px">
+<p>{{chai.description}}</p>
+<h2>Price of the tea is ${{chai.price}}</h2>
+{% endblock %}
+
+{% block container %}{% endblock %}

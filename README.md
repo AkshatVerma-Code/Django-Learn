@@ -11,6 +11,7 @@
 UV is chosen for this project due to its exceptional speed and efficiency.
 
 **Installation:**
+
 ```bash
 uv pip install django
 ```
@@ -28,6 +29,7 @@ django-admin startproject project_name
 ```
 
 **Project Structure:**
+
 - Creates a `project_name` folder
 - Contains `manage.py` (project management script)
 - Includes a `project_name` subfolder with configuration files
@@ -36,10 +38,10 @@ django-admin startproject project_name
 
 ## 📁 Key Files Overview
 
-| File | Purpose |
-|------|---------|
+| File       | Purpose                                      |
+| ---------- | -------------------------------------------- |
 | `views.py` | Contains business logic and request handlers |
-| `urls.py` | Handles URL routing and path configuration |
+| `urls.py`  | Handles URL routing and path configuration   |
 
 ---
 
@@ -92,10 +94,12 @@ python manage.py runserver
 ### Directory Structure
 
 **Best Practice:**
+
 1. Create a `templates` folder in your project root
 2. Inside `templates`, create a subfolder for each app/section (e.g., `home`, `about`)
 
 **Example:**
+
 ```
 templates/
     ├── home/
@@ -138,6 +142,7 @@ def home(request):
 ### Overview
 
 Static files include:
+
 - 🎨 **CSS** - Stylesheets
 - ⚡ **JavaScript** - Client-side scripts
 - 🖼️ **Images** - Graphics and media files
@@ -179,9 +184,9 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 **Step 2:** Link your static files
 
 ```html
-<link rel="stylesheet" href="{% static 'css/styles.css' %}">
+<link rel="stylesheet" href="{% static 'css/styles.css' %}" />
 <script src="{% static 'js/script.js' %}"></script>
-<img src="{% static 'images/logo.png' %}" alt="Logo">
+<img src="{% static 'images/logo.png' %}" alt="Logo" />
 ```
 
 > ⚠️ **Important:** Always include `{% load static %}` at the beginning of your template file!
@@ -195,6 +200,7 @@ STATICFILES_DIRS = [os.path.join(BASE_DIR, 'static')]
 Django uses a template language similar to Jinja2 for dynamic content rendering.
 
 **Variables:**
+
 ```django
 {{ variable_name }}
 {{ user.username }}
@@ -202,6 +208,7 @@ Django uses a template language similar to Jinja2 for dynamic content rendering.
 ```
 
 **Tags:**
+
 ```django
 {% if user.is_authenticated %}
     <p>Welcome, {{ user.username }}!</p>
@@ -211,6 +218,7 @@ Django uses a template language similar to Jinja2 for dynamic content rendering.
 ```
 
 **Loops:**
+
 ```django
 {% for item in item_list %}
     <li>{{ item.name }}</li>
@@ -218,6 +226,7 @@ Django uses a template language similar to Jinja2 for dynamic content rendering.
 ```
 
 **Template Inheritance:**
+
 ```django
 {# base.html #}
 <!DOCTYPE html>
@@ -241,6 +250,7 @@ Django uses a template language similar to Jinja2 for dynamic content rendering.
 ```
 
 **Common Filters:**
+
 ```django
 {{ value|lower }}           {# Lowercase #}
 {{ value|upper }}           {# Uppercase #}
@@ -267,6 +277,7 @@ python manage.py startapp app_name
 ```
 
 **Generated Structure:**
+
 ```
 app_name/
     ├── __init__.py
@@ -325,6 +336,7 @@ urlpatterns = [
     path('app/', include('app_name.urls')),
 ]
 ```
+
 ---
 
 ## 🎨 Tailwind CSS Integration
@@ -411,11 +423,13 @@ python manage.py tailwind install
 To use Tailwind CSS, you need to run both the Tailwind compiler and Django server:
 
 **Terminal 1 - Tailwind Compiler:**
+
 ```bash
 python manage.py tailwind start
 ```
 
 **Terminal 2 - Django Server:**
+
 ```bash
 python manage.py runserver
 ```
@@ -496,6 +510,7 @@ python manage.py createsuperuser
 ```
 
 You'll be prompted to enter:
+
 - **Username**
 - **Email address** (optional)
 - **Password** (entered twice for confirmation)
@@ -544,12 +559,12 @@ class ChaiVariety(models.Model):
         ('PL', 'PLAIN'),
         ('EL', 'ELACHI'),
     ]
-    
+
     Name = models.CharField(max_length=100)
     image = models.ImageField(upload_to='chais/')
     date_added = models.DateTimeField(default=timezone.now)
     type = models.CharField(max_length=2, choices=CHAI_TYPE_CHOICE)
-    
+
     def __str__(self):
         return self.Name
 ```
@@ -616,6 +631,91 @@ Now you can add, edit, and delete model entries through the admin panel at `/adm
 
 ---
 
+## 📤 Displaying Database Data in Templates
+
+### Retrieving All Records
+
+To display all database records on a webpage:
+
+**File:** `app_name/views.py`
+
+```python
+from django.shortcuts import render
+from .models import ChaiVariety
+
+def all_chai(request):
+    chais = ChaiVariety.objects.all()
+    return render(request, 'chai/all_chai.html', {'chais': chais})
+```
+
+> 💡 **Explanation:** `ChaiVariety.objects.all()` retrieves all records from the database. The `chais` variable stores objects that you can access using attributes like `.Name`, `.price`, `.image`, etc.
+
+**File:** `templates/chai/all_chai.html`
+
+```django
+{% for chai in chais %}
+    <div class='chai-items bg-blue-500 p-4 rounded shadow text-center'>
+        <img class='rounded' src="{{ chai.image.url }}" alt="{{ chai.Name }}">
+        <h3>{{ chai.Name }}</h3>
+        <a href="#">
+            <button
+                type="button"
+                class='bg-white text-blue-500 px-4 py-2 rounded hover:bg-gray-200 transition mt-2'>
+                {{ chai.type }} - {{ chai.id }}
+            </button>
+        </a>
+    </div>
+{% endfor %}
+```
+
+This loop displays each record from the database one by one.
+
+### Retrieving a Specific Record by ID
+
+To display details of a single record using its ID:
+
+**File:** `app_name/views.py`
+
+```python
+from django.shortcuts import render, get_object_or_404
+from .models import ChaiVariety
+
+def chai_detail(request, chai_id):
+    chai = get_object_or_404(ChaiVariety, pk=chai_id)
+    return render(request, 'chai/chai_detail.html', {'chai': chai})
+```
+
+> 🔍 **Note:**
+>
+> - `get_object_or_404()` retrieves an object by its primary key (pk) or returns a 404 error if not found
+> - `chai_id` is passed as a URL parameter
+> - `pk` stands for "primary key"
+
+**File:** `templates/chai/chai_detail.html`
+
+```django
+{% block content %}
+    <h1>CHAI Detail for {{ chai.Name }} with id {{ chai.id }}</h1>
+    <img src="{{ chai.image.url }}" alt="{{ chai.Name }}" width="500px">
+    <p>{{ chai.description }}</p>
+    <h2>Price of the tea is ${{ chai.price }}</h2>
+{% endblock %}
+```
+
+**File:** `app_name/urls.py`
+
+```python
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path('', views.all_chai, name='all_chai'),
+    path('<int:chai_id>/', views.chai_detail, name='chai_detail'),
+]
+```
+
+---
+
 ## 📝 Quick Reference
 
 - ✅ **UV**: Fast package manager
@@ -625,8 +725,4 @@ Now you can add, edit, and delete model entries through the admin panel at `/adm
 
 ---
 
-*Last updated: January 2026*
-
-
-
-
+_Last updated: January 2026_
